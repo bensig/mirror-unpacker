@@ -7,13 +7,13 @@ function extract_deb () {
   echo -e "$dir"
   find "$dir" -iname "*.deb" | \
     while read -r file || [[ -n "${file}" ]]; do
-      echo -e "$file"
+      echo -e "$file" >> $log
       basename=$(basename "$file")
-      echo -e "basename $basename"
+      echo -e "basename $basename" >> $log
       filename="unpack_$basename"
-      echo -e "filename $filename"
+      echo -e "filename $filename" >> $log
       tmpdir="$tmproot/deb/$filename"
-      echo -e "temp dir $tmpdir"
+      echo -e "temp dir $tmpdir" >> $log
       mkdir -p $tmpdir
       cd $tmpdir
       ar x $file
@@ -24,13 +24,13 @@ function extract_deb () {
 function extract_tar_gz () {
   find "$dir" -iname "*.tar.*" | \
     while read -r file || [[ -n "${file}" ]]; do
-      echo -e "$file"
+      echo -e "$file" >> $log
       basename=$(basename "$file")
-      echo -e "basename $basename"
+      echo -e "basename $basename" >> $log
       filename="unpack_$basename"
-      echo -e "filename $filename"
+      echo -e "filename $filename" >> $log
       tmpdir="$tmproot/deb/$filename"
-      echo -e "temp dir $tmpdir"
+      echo -e "temp dir $tmpdir" >> $log
       mkdir -p $tmpdir
       cd $tmpdir
       tar zxf $file
@@ -38,15 +38,16 @@ function extract_tar_gz () {
 }
 
 echo -e "This is a script for unpacking a debian / ubuntu mirror."
-dir="/var/cache/apt/archives/"
-tmproot="/root/bin/tmproot"
-log="/home/ubuntu/bin/log.unpacker"
+#dir="/var/cache/apt/archives/"
+#tmproot="/home/ubuntu/bin/tmproot"
+#log="/home/ubuntu/bin/log.unpacker"
 #get dir to crawl
-#read -e -p "Please enter the root path containing the mirror: " dir
+read -e -p "Please enter the root path containing the mirror: " dir
 #get log file to write
-#read -e -p "Please enter the location and name of the log file: " log
+read -e -p "Please enter the location and name of the log file: " log
 #get root of tmp directory for unpacking
-#read -e -p "Please enter the location of the tmp dir for unpacking: " tmproot
+read -e -p "Please enter the location of the tmp dir for unpacking: " tmproot
 
+echo -e "" > $log
 extract_deb
 extract_tar_gz
